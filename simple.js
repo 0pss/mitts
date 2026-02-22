@@ -2,16 +2,25 @@ class StoryEngine {
     constructor() {
         this.scenes = [];
         
-        // LocalStorage laden. Startet bei 0, falls nichts gespeichert ist.
+        // 1. DIALOG-STATE: Wo in der Geschichte sind wir?
         this.currentIndex = parseInt(localStorage.getItem('lappen_progress')) || 0;
         
-        // Liest "?scan=2" etc. aus der URL. Standardwert ist 1, damit die Seite auch ohne Parameter funktioniert.
-        const urlParams = new URLSearchParams(window.location.search);
-        this.currentScanLevel = parseInt(urlParams.get('scan')) || 1;
+        // 2. SCAN-STATE: Wie oft wurde der QR-Code (die Seite) aufgerufen?
+        let totalScans = parseInt(localStorage.getItem('lappen_scans')) || 0;
+        
+        // Wir zählen diesen Aufruf als neuen Scan.
+        // Der sessionStorage Trick verhindert, dass ein versehentlicher Reload 
+        // direkt als neuer Scan zählt (man muss den Tab schließen/neu scannen).
+        if (!sessionStorage.getItem('scanned_in_this_session')) {
+            totalScans++;
+            localStorage.setItem('lappen_scans', totalScans);
+            sessionStorage.setItem('scanned_in_this_session', 'true');
+        }
+        this.currentScanLevel = totalScans;
         
         this.touchStartX = 0;
         this.touchEndX = 0;
-        this.isTyping = false; // Verhindert wirres Skippen während des Tippens
+        this.isTyping = false;
         
         this.init();
     }
@@ -20,12 +29,20 @@ class StoryEngine {
         await this.loadStory();
         this.setupListeners();
         
-        // Failsafe: Falls die JSON-Datei gekürzt wurde
+        // Failsafe: Falls die JSON-Datei mal gekürzt wird
         if (this.currentIndex >= this.scenes.length) {
             this.currentIndex = this.scenes.length - 1;
         }
         
-        this.showScene(this.currentIndex);
+        // Beim Laden prüfen, ob wir die aktuelle Szene überhaupt sehen dürfen
+        const currentScene = this.scenes[this.currentIndex];
+        const requiredLevel = currentScene.requiredScan || 1;
+        
+        if (requiredLevel > this.currentScanLevel) {
+            this.showLockMessage(requiredLevel);
+        } else {
+            this.showScene(this.currentIndex);
+        }
     }
 
     async loadStory() {
@@ -78,7 +95,7 @@ class StoryEngine {
     }
 
     next() {
-        if (this.isTyping) return; // Warten, bis Text fertig getippt ist
+        if (this.isTyping) return; // Warten, bis Text fertig ist
 
         const nextIndex = this.currentIndex + 1;
         
@@ -86,13 +103,14 @@ class StoryEngine {
             const nextScene = this.scenes[nextIndex];
             const requiredLevel = nextScene.requiredScan || 1;
             
-            // Wenn die nächste Szene ein höheres Scan-Level braucht, zeige Warnung an und brich ab
+            // Wenn die nächste Szene mehr Scans braucht, als wir haben:
             if (requiredLevel > this.currentScanLevel) {
                 this.showLockMessage(requiredLevel);
+                // WICHTIG: currentIndex wird NICHT erhöht! Man bleibt stecken.
                 return;
             }
             
-            // Ansonsten: Weitergehen und Fortschritt speichern
+            // Alles okay, wir dürfen weiter
             this.currentIndex = nextIndex;
             localStorage.setItem('lappen_progress', this.currentIndex);
             this.showScene(this.currentIndex);
@@ -105,33 +123,35 @@ class StoryEngine {
         if (this.currentIndex > 0) {
             this.currentIndex--;
             localStorage.setItem('lappen_progress', this.currentIndex);
+            
+            // Wenn man zurückgeht, ignorieren wir den Lockscreen, weil
+            // man vergangene Szenen logischerweise schon freigeschaltet hat.
             this.showScene(this.currentIndex);
         }
     }
 
     showLockMessage(requiredLevel) {
         const avatar = document.getElementById('avatar');
-        avatar.src = 'assets/angry.svg'; // Der Lappen wird sauer, wenn du schummelst
+        avatar.src = 'assets/angry.svg'; 
         avatar.classList.add('pulse');
         setTimeout(() => avatar.classList.remove('pulse'), 500);
         
-        const lockText = `HALT! Systemblockade! Du musst den Topflappen erst erneut scannen, um diese geheimen Daten zu sehen. (Benötigt Scan #${requiredLevel})`;
+        const lockText = `HALT! Systemblockade! Du musst den Topflappen erst erneut scannen, um fortzufahren. (Benötigt Scan #${requiredLevel} / Du hast ${this.currentScanLevel})`;
+        
+        // Wir zeigen den Lock-Text, aber überschreiben nicht den currentIndex
         this.typeText(lockText);
     }
 
     showScene(index) {
         const scene = this.scenes[index];
         
-        // Update Avatar
         const avatar = document.getElementById('avatar');
         avatar.src = `assets/${scene.avatar}.svg`;
         avatar.classList.add('pulse');
         setTimeout(() => avatar.classList.remove('pulse'), 500);
         
-        // Update Text
         this.typeText(scene.text);
         
-        // Update Counter
         document.getElementById('current').textContent = index + 1;
     }
 
