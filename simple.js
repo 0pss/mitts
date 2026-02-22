@@ -2,13 +2,11 @@
 class StoryEngine {
     constructor() {
         this.scenes = [];
-        this.currentIndex = 0;
-        this.touchStartX = 0;
-        this.touchEndX = 0;
+        this.currentIndex = parseInt(localStorage.getItem('lappen_progress')) || 0;
+        this.currentScanCount = parseInt(new URLSearchParams(window.location.search).get('scan')) || 1;
         
         this.init();
     }
-
     async init() {
         // Load story data
         await this.loadStory();
@@ -73,34 +71,51 @@ class StoryEngine {
         }
     }
 
-    next() {
+    next() 
+    {
+        const currentScene = this.scenes[this.currentIndex];
+        
+        // Checkpoint-Logik: Braucht diese Szene einen höheren Scan-Count als wir haben?
+        if (currentScene.unlocksAtScan > this.currentScanCount) {
+            this.showLockScreen();
+            return;
+        }
+
         if (this.currentIndex < this.scenes.length - 1) {
             this.currentIndex++;
+            localStorage.setItem('lappen_progress', this.currentIndex);
             this.showScene(this.currentIndex);
         }
     }
+
+    showLockScreen() {
+        const textElement = document.getElementById('story-text');
+        textElement.innerHTML = "<span style='color: #ff4757;'>STOPP!</span> Scanne den QR-Code erneut, um fortzufahren!";
+        // Hier könnte man auch den Avatar auf 'angry' setzen
+        document.getElementById('avatar').src = `assets/angry.svg`;
+    }
+
+    showScene(index) {
+        const scene = this.scenes[index];
+        
+        // Automatische Scan-Sperre prüfen beim Laden einer Szene
+        if (scene.unlocksAtScan > this.currentScanCount) {
+            this.showLockScreen();
+            return;
+        }
+
+        const avatar = document.getElementById('avatar');
+        avatar.src = `assets/${scene.avatar}.svg`;
+        this.typeText(scene.text);
+        document.getElementById('current').textContent = index + 1;
+    }
+
 
     previous() {
         if (this.currentIndex > 0) {
             this.currentIndex--;
             this.showScene(this.currentIndex);
         }
-    }
-
-    showScene(index) {
-        const scene = this.scenes[index];
-        
-        // Update avatar
-        const avatar = document.getElementById('avatar');
-        avatar.src = `assets/${scene.avatar}.svg`;
-        avatar.classList.add('pulse');
-        setTimeout(() => avatar.classList.remove('pulse'), 500);
-        
-        // Update text with typewriter effect
-        this.typeText(scene.text);
-        
-        // Update progress
-        document.getElementById('current').textContent = index + 1;
     }
 
     typeText(text) {

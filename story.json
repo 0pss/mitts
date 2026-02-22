@@ -1,26 +1,17 @@
 [
   {
     "avatar": "neutral",
-    "text": "Hey! Ich bin ein Topflappen. Ein ganz normaler Topflappen."
+    "text": "Hey! Ich bin ein Topflappen. Scann mich mal richtig...",
+    "unlocksAtScan": 1
   },
   {
     "avatar": "happy",
-    "text": "Naja, fast normal. Ich kann sprechen. Das ist schon ziemlich cool, oder?"
+    "text": "Super, der erste Scan hat geklappt! Aber für die echten Geheimnisse musst du mich nochmal scannen.",
+    "unlocksAtScan": 1
   },
   {
     "avatar": "angry",
-    "text": "Aber weißt du was mich richtig nervt? Lebensmittelverschwendung!"
-  },
-  {
-    "avatar": "shocked",
-    "text": "11 Millionen Tonnen pro Jahr in Deutschland! Das ist verrückt!"
-  },
-  {
-    "avatar": "neutral",
-    "text": "Aber genug von mir. Swipe weiter, um mehr zu erfahren..."
-  },
-  {
-    "avatar": "rainbow",
-    "text": "Oder bleib einfach hier und genieße meine farbenfrohe Seite! 🌈"
+    "text": "Ah! Da bist du ja wieder. Scan Nummer 2 erkannt. Jetzt wird es ernst...",
+    "unlocksAtScan": 2
   }
 ]
