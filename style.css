@@ -1,0 +1,417 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+:root {
+    --primary-bg: #2a1a4a;
+    --dialog-bg: #1a0f2e;
+    --dialog-border: #6b4c9a;
+    --text-color: #ffffff;
+    --accent-color: #ff6b9d;
+    --success-color: #4ade80;
+    --error-color: #ef4444;
+    --shadow: rgba(0, 0, 0, 0.5);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: 'Press Start 2P', cursive;
+    background: var(--primary-bg);
+    color: var(--text-color);
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh; /* Dynamic viewport height for mobile */
+    position: fixed;
+    touch-action: pan-y;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* Scene Container */
+#scene-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 70%;
+    overflow: hidden;
+}
+
+#background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    transition: opacity 0.5s ease;
+}
+
+#scene-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+
+/* Dialog Box */
+#dialog-box {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 30%;
+    background: var(--dialog-bg);
+    border-top: 6px solid var(--dialog-border);
+    box-shadow: 0 -8px 24px var(--shadow);
+    display: flex;
+    padding: 16px;
+    gap: 16px;
+    animation: slideUp 0.5s ease;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+#avatar-container {
+    width: 25%;
+    min-width: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#avatar {
+    width: 100%;
+    height: auto;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    border: 4px solid var(--dialog-border);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease;
+}
+
+#avatar.bounce {
+    animation: bounce 0.5s ease;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+#text-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+}
+
+#dialog-text {
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--text-color);
+    overflow-y: auto;
+    max-height: 100%;
+    padding-right: 8px;
+    word-wrap: break-word;
+}
+
+/* Custom Scrollbar */
+#dialog-text::-webkit-scrollbar {
+    width: 8px;
+}
+
+#dialog-text::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+#dialog-text::-webkit-scrollbar-thumb {
+    background: var(--dialog-border);
+    border-radius: 4px;
+}
+
+/* Choices */
+#choices-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.choice-btn {
+    background: var(--dialog-border);
+    border: 3px solid var(--text-color);
+    color: var(--text-color);
+    padding: 12px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    box-shadow: 4px 4px 0 var(--shadow);
+}
+
+.choice-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--shadow);
+}
+
+.choice-btn:hover {
+    background: var(--accent-color);
+}
+
+/* Quiz Container */
+#quiz-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 20px;
+}
+
+.quiz-box {
+    background: var(--dialog-bg);
+    border: 6px solid var(--dialog-border);
+    padding: 24px;
+    max-width: 600px;
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 0 40px rgba(255, 107, 157, 0.5);
+}
+
+#quiz-question {
+    font-size: 14px;
+    margin-bottom: 24px;
+    line-height: 1.6;
+    color: var(--accent-color);
+}
+
+#quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.quiz-option {
+    background: var(--dialog-border);
+    border: 3px solid var(--text-color);
+    color: var(--text-color);
+    padding: 16px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    box-shadow: 4px 4px 0 var(--shadow);
+}
+
+.quiz-option:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--shadow);
+}
+
+.quiz-option.correct {
+    background: var(--success-color);
+    border-color: #22c55e;
+}
+
+.quiz-option.wrong {
+    background: var(--error-color);
+    border-color: #dc2626;
+}
+
+/* Game Canvas */
+#game-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, #87ceeb 0%, #f0e68c 100%);
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    z-index: 200;
+}
+
+#game-ui {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    z-index: 201;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#score {
+    background: var(--dialog-bg);
+    border: 4px solid var(--dialog-border);
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    box-shadow: 4px 4px 0 var(--shadow);
+}
+
+#game-instructions {
+    background: var(--accent-color);
+    border: 4px solid var(--text-color);
+    padding: 12px 20px;
+    font-size: 10px;
+    border-radius: 8px;
+    box-shadow: 4px 4px 0 var(--shadow);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* QR Warning */
+#qr-warning {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 20px;
+}
+
+.warning-box {
+    background: var(--dialog-bg);
+    border: 8px solid var(--error-color);
+    padding: 32px;
+    max-width: 500px;
+    text-align: center;
+    border-radius: 12px;
+    box-shadow: 0 0 60px rgba(239, 68, 68, 0.8);
+    animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+#angry-lappen {
+    width: 150px;
+    height: auto;
+    margin-bottom: 20px;
+    image-rendering: pixelated;
+}
+
+.warning-box h2 {
+    font-size: 24px;
+    color: var(--error-color);
+    margin-bottom: 16px;
+}
+
+.warning-box p {
+    font-size: 12px;
+    line-height: 1.8;
+    margin-bottom: 12px;
+}
+
+.warning-box p.small {
+    font-size: 9px;
+    color: #aaa;
+    margin-top: 16px;
+}
+
+/* Utility Classes */
+.hidden {
+    display: none !important;
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.slide-in-left {
+    animation: slideInLeft 0.5s ease;
+}
+
+@keyframes slideInLeft {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(0); }
+}
+
+.slide-in-right {
+    animation: slideInRight 0.5s ease;
+}
+
+@keyframes slideInRight {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    #dialog-text {
+        font-size: 10px;
+    }
+    
+    .choice-btn {
+        font-size: 9px;
+        padding: 10px;
+    }
+    
+    #quiz-question {
+        font-size: 12px;
+    }
+    
+    .quiz-option {
+        font-size: 9px;
+        padding: 12px;
+    }
+}
+
+@media (orientation: landscape) {
+    #scene-container {
+        height: 60%;
+    }
+    
+    #dialog-box {
+        height: 40%;
+    }
+}

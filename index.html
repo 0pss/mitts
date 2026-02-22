@@ -1,60 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oven Mitt Status</title>
-    <style>
-        :root { --bg: #ffffff; --text: #1a1a1a; --accent: #ff4757; }
-        body { font-family: -apple-system, sans-serif; background: var(--bg); color: var(--text); 
-               display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; text-align: center; }
-        .container { padding: 2rem; max-width: 80%; }
-        h1 { font-size: 1.2rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); }
-        p { font-size: 1.5rem; font-weight: 700; line-height: 1.3; margin: 20px 0; }
-        .stats { font-size: 0.8rem; opacity: 0.5; margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Die Lappen-Chroniken</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-<div class="container">
-    <h1>System Notification</h1>
-    <p id="message">Initializing...</p>
-    
-    <div class="stats">
-        Device ID: <span id="device-id">Checking...</span><br>
-        Local Session: <span id="scan-count">0</span>
+    <!-- Scene Container -->
+    <div id="scene-container">
+        <div id="background"></div>
+        <div id="scene-content"></div>
     </div>
-</div>
 
-<script>
-    // 1. The Progression of Meta Truths
-    const script = [
-        "Did you really just get out your phone for an oven mitt?",
-        "Back again? Whatever is in the oven is definitely burning by now.",
-        "I'm a piece of fabric. I have no more data for you.",
-        "Are you scanning me just to see if the text changes? It does.",
-        "This is getting awkward for both of us.",
-        "Go eat. Please."
-    ];
+    <!-- Dialog Box -->
+    <div id="dialog-box">
+        <div id="avatar-container">
+            <img id="avatar" src="" alt="Topflappen">
+        </div>
+        <div id="text-container">
+            <div id="dialog-text"></div>
+            <div id="choices-container"></div>
+        </div>
+    </div>
 
-    // 2. Handle Local Storage (GDPR Friendly - stays on device)
-    let count = localStorage.getItem('mitt_scan_count') || 0;
-    count = parseInt(count) + 1;
-    localStorage.setItem('mitt_scan_count', count);
+    <!-- Quiz Container (hidden initially) -->
+    <div id="quiz-container" class="hidden">
+        <div class="quiz-box">
+            <h2 id="quiz-question"></h2>
+            <div id="quiz-options"></div>
+        </div>
+    </div>
 
-    // 3. Generate a "Fake" but consistent Device ID for the Meta vibe
-    let deviceId = localStorage.getItem('mitt_device_id');
-    if (!deviceId) {
-        deviceId = 'MITT-' + Math.random().toString(36).substr(2, 9).toUpperCase();
-        localStorage.setItem('mitt_device_id', deviceId);
-    }
+    <!-- Game Container (hidden initially) -->
+    <canvas id="game-canvas" class="hidden"></canvas>
+    <div id="game-ui" class="hidden">
+        <div id="score">Score: 0</div>
+        <div id="game-instructions">Tap zum Springen!</div>
+    </div>
 
-    // 4. Update the UI
-    const messageIndex = Math.min(count - 1, script.length - 1);
-    document.getElementById('message').innerText = script[messageIndex];
-    document.getElementById('scan-count').innerText = count;
-    document.getElementById('device-id').innerText = deviceId;
-</script>
+    <!-- QR Warning -->
+    <div id="qr-warning" class="hidden">
+        <div class="warning-box">
+            <img id="angry-lappen" src="" alt="Wütender Topflappen">
+            <h2>HEY!</h2>
+            <p>Scann mich erst mal ordentlich mit dem QR-Code!</p>
+            <p class="small">Du glaubst doch nicht ernsthaft, dass du hier einfach so reinkommst?</p>
+        </div>
+    </div>
 
+    <script src="js/main.js"></script>
+    <script src="js/game.js"></script>
 </body>
 </html>
