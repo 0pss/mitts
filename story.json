@@ -9,20 +9,21 @@
     "id": "scan_2_lock",
     "avatar": "neutral",
     "text": "Aha, da ist aber jemand neugierig. Ich bin Toppi der Topflappen. Das mag Lappidar für dich klingen, aber ich bin stolzer Bewohner dieser Küche! Scanne nochmal, wenn du mehr erfahren willst!",
+    "requiredScan": 2,
     "targetId": "scan_3_lock"
   },
   {
     "id": "scan_3_lock",
     "avatar": "happy",
     "text": "Lässt du dir alles von Lappen sagen? Naja, ich mag dich irgendwie. Wenn du mich auch magst, scanne mich nochmals und ich verrate dir einige Geheimnisse aus der Küche.",
-    "requiredScan": 2,
+    "requiredScan": 3,
     "targetId": "scan_4_choice"
   },
   {
     "id": "scan_4_choice",
     "avatar": "neutral",
     "text": "In der Küche braut sich eine Rebellion zusammen. Der Widerstand und das Ministerium für Ordnung geraten immer öfter aneinander. Sag mir, wo du dich verortest:",
-    "requiredScan": 3,
+    "requiredScan": 4,
     "options": [
       { "text": "Team Guerilla", "choice": "guerilla", "targetId": "guerilla_quiz" },
       { "text": "Team Ordnung", "choice": "ordnung", "targetId": "ordnung_quiz" }
@@ -74,14 +75,14 @@
     "id": "scan_5_guerilla",
     "avatar": "angry",
     "text": "Um das Ministerium zu bezwingen, müssen wir ihre Bürokratie mit veganem Käse sabotieren...",
-    "requiredScan": 4,
+    "requiredScan": 5,
     "isEnd": true
   },
   {
     "id": "scan_5_ordnung",
     "avatar": "neutral",
     "text": "Um den Widerstand zu unterdrücken, müssen wir jedes Krümelchen im System katalogisieren...",
-    "requiredScan": 4,
+    "requiredScan": 5,
     "isEnd": true
   }
 ]

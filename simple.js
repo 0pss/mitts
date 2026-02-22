@@ -3,12 +3,15 @@ class StoryEngine {
         this.scenes = [];
         this.currentIndex = parseInt(localStorage.getItem('lappen_progress')) || 0;
         
-        // Scan-Logik bleibt für die Bedingungsprüfung erhalten
+        // Scan-Logik
         let scans = parseInt(localStorage.getItem('lappen_scans')) || 0;
+        this.justScanned = false;
+
         if (!sessionStorage.getItem('scanned_session')) {
             scans++;
             localStorage.setItem('lappen_scans', scans);
             sessionStorage.setItem('scanned_session', 'true');
+            this.justScanned = true; // Markierung für Auto-Advance
         }
         this.currentScanLevel = scans;
         this.isTyping = false;
@@ -17,8 +20,25 @@ class StoryEngine {
 
     async init() {
         const res = await fetch('story.json');
-        this.scenes = await res.json();
+        this.scenes = await response.json();
+        
         this.setupListeners();
+
+        // AUTO-ADVANCE LOGIK:
+        // Wenn wir gerade neu gescannt haben, prüfen wir, ob wir an einem Lock hingen
+        if (this.justScanned) {
+            const currentScene = this.scenes[this.currentIndex];
+            let nextIdx = currentScene.targetId ? this.scenes.findIndex(s => s.id === currentScene.targetId) : this.currentIndex + 1;
+            
+            if (nextIdx !== -1 && nextIdx < this.scenes.length) {
+                // Wenn die NÄCHSTE Szene jetzt (nach dem neuen Scan) erlaubt ist, geh automatisch weiter
+                if ((this.scenes[nextIdx].requiredScan || 1) <= this.currentScanLevel) {
+                    this.currentIndex = nextIdx;
+                    localStorage.setItem('lappen_progress', this.currentIndex);
+                }
+            }
+        }
+
         this.showScene(this.currentIndex);
     }
 
@@ -29,9 +49,19 @@ class StoryEngine {
         });
     }
 
-    // Zeigt nur die Anzahl der verfügbaren Szenen im aktuellen Scan-Level
+    // Zeigt nur die Anzahl der Szenen bis zum NÄCHSTEN (noch gesperrten) Scan-Block
     getDynamicTotal() {
-        return this.scenes.filter(s => (s.requiredScan || 1) <= this.currentScanLevel).length;
+        let count = 0;
+        // Wir gehen die Szenen durch und zählen alle, die das aktuelle Scan-Level oder niedriger haben
+        for (let i = 0; i < this.scenes.length; i++) {
+            if ((this.scenes[i].requiredScan || 1) <= this.currentScanLevel) {
+                count++;
+            } else {
+                // Sobald eine Szene ein höheres Level braucht, hören wir auf zu zählen
+                break;
+            }
+        }
+        return count;
     }
 
     next() {
@@ -41,10 +71,9 @@ class StoryEngine {
         if (nextIdx !== -1 && nextIdx < this.scenes.length) {
             const nextS = this.scenes[nextIdx];
             
-            // Wenn der Scan-Level nicht reicht, passiert einfach nichts.
-            // Der User bleibt auf der aktuellen Szene (deinem Custom Lockscreen) stehen.
+            // Check ob das Scan-Level reicht
             if ((nextS.requiredScan || 1) > this.currentScanLevel) {
-                console.log("Scan erforderlich für nächste Szene");
+                console.log("Blockiert: Scan benötigt");
                 return; 
             }
 
@@ -65,9 +94,10 @@ class StoryEngine {
             if (scene.isEnd) this.showResetButton();
         });
 
-        const total = this.getDynamicTotal();
+        // UI Update
+        const totalVisible = this.getDynamicTotal();
         document.getElementById('current').textContent = idx + 1;
-        document.getElementById('total').textContent = total;
+        document.getElementById('total').textContent = totalVisible;
     }
 
     renderButtons(opts, type, quizData = null) {
@@ -97,7 +127,7 @@ class StoryEngine {
         container.id = "option-container";
         const btn = document.createElement('button');
         btn.className = "choice-btn reset-btn";
-        btn.textContent = "🔄 Reset & Scan-History löschen";
+        btn.textContent = "🔄 Nochmal von vorn";
         btn.onclick = () => { localStorage.clear(); sessionStorage.clear(); window.location.reload(); };
         container.appendChild(btn);
         document.getElementById('story-text').appendChild(container);
@@ -106,7 +136,6 @@ class StoryEngine {
     goToId(id) {
         const idx = this.scenes.findIndex(s => s.id === id);
         if (idx !== -1) {
-            // Prüfung auch hier: Wenn Ziel-Szene gesperrt, bewege dich nicht.
             if ((this.scenes[idx].requiredScan || 1) > this.currentScanLevel) return;
             this.currentIndex = idx;
             localStorage.setItem('lappen_progress', this.currentIndex);
