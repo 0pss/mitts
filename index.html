@@ -3,25 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Story Engine POC</title>
+    <title>Toppis Rebellion</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="simple.css">
 </head>
 <body>
     <div id="app">
         <div id="avatar-container">
-            <img id="avatar" src="" alt="Character">
+            <img id="avatar" src="assets/neutral.png" alt="Toppi">
+            <img id="hat-overlay" src="" style="position: absolute; top: 0; left: 0; width: 100%; display: none; image-rendering: pixelated;">
         </div>
 
         <div id="text-container">
-            <p id="story-text"></p>
+            <div id="story-text">
+                Lade Story...
+            </div>
+            
+            <div id="option-container"></div>
+
             <div id="progress">
-                <span id="current">1</span> / <span id="total">6</span>
+                <span id="current">0</span> / <span id="total">0</span>
             </div>
         </div>
 
         <div id="nav-hint">
-            ← Swipe oder klick →
+            Klicke oder tippe zum Fortfahren
         </div>
     </div>
 

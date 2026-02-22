@@ -99,27 +99,29 @@ class StoryEngine {
         }
     }
 
-    showScene(idx) {
-        const scene = this.scenes[idx];
-        if (!scene) return;
+showScene(idx) {
+    const scene = this.scenes[idx];
+    if (!scene) return;
 
-        const avatar = document.getElementById('avatar');
-        avatar.src = `assets/${scene.avatar}.svg`;
-        avatar.classList.add('pulse');
-        setTimeout(() => avatar.classList.remove('pulse'), 500);
+    // Wechsel auf PNG Assets
+    const avatar = document.getElementById('avatar');
+    avatar.src = `assets/${scene.avatar}.png`; 
+    
+    // Animation kurz triggern
+    avatar.style.transform = "scale(1.05)";
+    setTimeout(() => avatar.style.transform = "scale(1)", 100);
+
+    this.typeText(scene.text, () => {
+        if (scene.options) this.renderButtons(scene.options, 'choice');
+        else if (scene.quiz) this.renderButtons(scene.quiz.options, 'quiz', scene.quiz);
         
-        this.typeText(scene.text, () => {
-            if (scene.options) this.renderButtons(scene.options, 'choice');
-            else if (scene.quiz) this.renderButtons(scene.quiz.options, 'quiz', scene.quiz);
-            
-            if (scene.isEnd) this.showResetButton();
-        });
+        if (scene.isEnd) this.showResetButton();
+    });
 
-        // Fortschrittsanzeige: Zeige absolute Position vs. aktuell sichtbares Total
-        const totalVisible = this.getDynamicTotal();
-        document.getElementById('current').textContent = idx + 1;
-        document.getElementById('total').textContent = totalVisible;
-    }
+    const totalVisible = this.getDynamicTotal();
+    document.getElementById('current').textContent = idx + 1;
+    document.getElementById('total').textContent = totalVisible;
+}
 
     renderButtons(opts, type, quizData = null) {
         const container = document.createElement('div');

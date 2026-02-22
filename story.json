@@ -1,27 +1,27 @@
 [
   {
     "id": "scan_1",
-    "avatar": "shocked",
+    "avatar": "happy",
     "text": "Hää hast du jetzt grade echt dein Handy *in der Küche* rausgeholt um diesen QR-Code zu scannen? Das würdest du sicher nicht nochmal versuchen....oder ;)?",
     "requiredScan": 1
   },
   {
     "id": "scan_2_lock",
-    "avatar": "neutral",
+    "avatar": "wink",
     "text": "Aha, da ist aber jemand neugierig. Ich bin Toppi der Topflappen. Das mag Lappidar für dich klingen, aber ich bin stolzer Bewohner dieser Küche! Scanne nochmal, wenn du mehr erfahren willst!",
     "requiredScan": 2,
     "targetId": "scan_3_lock"
   },
   {
     "id": "scan_3_lock",
-    "avatar": "happy",
+    "avatar": "wink",
     "text": "Lässt du dir alles von Lappen sagen? Naja, ich mag dich irgendwie. Wenn du mich auch magst, scanne mich nochmals und ich verrate dir einige Geheimnisse aus der Küche.",
     "requiredScan": 3,
     "targetId": "scan_4_choice"
   },
   {
     "id": "scan_4_choice",
-    "avatar": "neutral",
+    "avatar": "question",
     "text": "In der Küche braut sich eine Rebellion zusammen. Der Widerstand und das Ministerium für Ordnung geraten immer öfter aneinander. Sag mir, wo du dich verortest:",
     "requiredScan": 4,
     "options": [
@@ -31,7 +31,7 @@
   },
   {
     "id": "guerilla_quiz",
-    "avatar": "angry",
+    "avatar": "sirius",
     "text": "Willkommen im Widerstand. Um zu beweisen, dass du zu uns gehörst, beantworte mir folgende Frage: Wovon produzieren deutsche Haushalte jährlich mehr?",
     "quiz": {
       "correct": "b",
@@ -46,13 +46,13 @@
   },
   {
     "id": "guerilla_correct",
-    "avatar": "happy",
+    "avatar": "superhappy",
     "text": "Korrekt! In Deutschland landen jährlich ca. 11 Mio. Tonnen Lebensmittel im Müll, aber 'nur' ca. 1,3 Mio. Tonnen Textilien. Scanne mich nochmal um fortzufahren.",
     "targetId": "scan_5_guerilla"
   },
   {
     "id": "ordnung_quiz",
-    "avatar": "neutral",
+    "avatar": "sirius",
     "text": "Ordnung muss sein – so unser Wahlspruch. Um sich auszuweisen, können Sie mir ja sicher beantworten: Was benötigt mehr Wasser in der Produktion?",
     "quiz": {
       "correct": "b",
@@ -67,20 +67,20 @@
   },
   {
     "id": "ordnung_correct",
-    "avatar": "happy",
+    "avatar": "superhappy",
     "text": "Sehr gut. 1kg Rindfleisch frisst ca. 15.000 Liter Wasser, eine Jeans nur etwa 10.000 Liter (pro kg). Ordnung durch Fakten! Scanne mich nochmal um fortzufahren.",
     "targetId": "scan_5_ordnung"
   },
   {
     "id": "scan_5_guerilla",
-    "avatar": "angry",
+    "avatar": "sad",
     "text": "Um das Ministerium zu bezwingen, müssen wir ihre Bürokratie mit veganem Käse sabotieren...",
     "requiredScan": 5,
     "isEnd": true
   },
   {
     "id": "scan_5_ordnung",
-    "avatar": "neutral",
+    "avatar": "sad",
     "text": "Um den Widerstand zu unterdrücken, müssen wir jedes Krümelchen im System katalogisieren...",
     "requiredScan": 5,
     "isEnd": true
