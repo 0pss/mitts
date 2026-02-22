@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+    <!-- Animated rainbow stripes -->
+    <rect width="200" height="28.57" fill="#e91e63" y="0">
+        <animate attributeName="opacity" values="1;0.5;1" dur="1s" repeatCount="indefinite"/>
+    </rect>
+    <rect width="200" height="28.57" fill="#ff5722" y="28.57">
+        <animate attributeName="opacity" values="0.5;1;0.5" dur="1s" repeatCount="indefinite"/>
+    </rect>
+    <rect width="200" height="28.57" fill="#ff9800" y="57.14">
+        <animate attributeName="opacity" values="1;0.5;1" dur="1s" repeatCount="indefinite"/>
+    </rect>
+    <rect width="200" height="28.57" fill="#ffeb3b" y="85.71">
+        <animate attributeName="opacity" values="0.5;1;0.5" dur="1s" repeatCount="indefinite"/>
+    </rect>
+    <rect width="200" height="28.57" fill="#8bc34a" y="114.28">
+        <animate attributeName="opacity" values="1;0.5;1" dur="1s" repeatCount="indefinite"/>
+    </rect>
+    <rect width="200" height="28.57" fill="#2196f3" y="142.85">
+        <animate attributeName="opacity" values="0.5;1;0.5" dur="1s" repeatCount="indefinite"/>
+    </rect>
+    <rect width="200" height="28.57" fill="#9c27b0" y="171.42">
+        <animate attributeName="opacity" values="1;0.5;1" dur="1s" repeatCount="indefinite"/>
+    </rect>
+    
+    <!-- Sparkles -->
+    <circle cx="40" cy="40" r="3" fill="#fff">
+        <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="160" cy="60" r="4" fill="#fff">
+        <animate attributeName="opacity" values="0;1;0" dur="1.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="50" cy="150" r="3" fill="#fff">
+        <animate attributeName="opacity" values="0;1;0" dur="2.5s" repeatCount="indefinite"/>
+    </circle>
+    
+    <!-- Border with color change -->
+    <rect width="200" height="200" fill="none" stroke="#ffd700" stroke-width="8">
+        <animate attributeName="stroke" values="#ffd700;#ff69b4;#00ffff;#ffd700" dur="3s" repeatCount="indefinite"/>
+    </rect>
+    
+    <!-- Star eyes -->
+    <path d="M 70 75 L 73 85 L 83 85 L 75 91 L 78 101 L 70 95 L 62 101 L 65 91 L 57 85 L 67 85 Z" fill="#ffd700"/>
+    <path d="M 130 75 L 133 85 L 143 85 L 135 91 L 138 101 L 130 95 L 122 101 L 125 91 L 117 85 L 127 85 Z" fill="#ffd700"/>
+    
+    <!-- Big smile with sparkle -->
+    <rect x="60" y="130" width="80" height="12" fill="#000"/>
+    <rect x="65" y="136" width="12" height="12" fill="#000"/>
+    <rect x="123" y="136" width="12" height="12" fill="#000"/>
+    <circle cx="100" cy="136" r="3" fill="#ffd700">
+        <animate attributeName="r" values="3;5;3" dur="1s" repeatCount="indefinite"/>
+    </circle>
+</svg>

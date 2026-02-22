@@ -189,10 +189,10 @@ class LappenApp {
 
     showQRWarning() {
         const warning = document.getElementById('qr-warning');
-        const angryImg = document.getElementById('angry-lappen');
+        const angryContainer = document.getElementById('angry-lappen');
         
-        // Use angry emotion avatar
-        angryImg.src = this.getAvatarSrc('angry');
+        // Load angry avatar image
+        angryContainer.innerHTML = '<img src="assets/angry.svg" alt="Angry" style="width: 100%; height: auto; border: 4px solid #ef4444; border-radius: 8px;">';
         warning.classList.remove('hidden');
     }
 
@@ -279,31 +279,31 @@ class LappenApp {
 
     setBackground(bgName) {
         const bg = document.getElementById('background');
-        // Simple gradient background for now
+        // Simple gradient background
         const bgColors = {
             kitchen: 'linear-gradient(180deg, #8b4513 0%, #d2691e 50%, #f4a460 100%)'
         };
         bg.style.background = bgColors[bgName] || bgColors.kitchen;
     }
 
-    getAvatarSrc(emotion) {
-        // Using the uploaded image for different emotions
-        // In production, you'd have different images for each emotion
-        const avatarMap = {
-            neutral: '/mnt/user-data/uploads/Gemini_Generated_Image_a18dqoa18dqoa18d.png',
-            happy: '/mnt/user-data/uploads/Gemini_Generated_Image_a18dqoa18dqoa18d.png',
-            angry: '/mnt/user-data/uploads/Gemini_Generated_Image_a18dqoa18dqoa18d.png',
-            shocked: '/mnt/user-data/uploads/Gemini_Generated_Image_a18dqoa18dqoa18d.png',
-            rainbow: '/mnt/user-data/uploads/Gemini_Generated_Image_a18dqoa18dqoa18d.png'
-        };
-        return avatarMap[emotion] || avatarMap.neutral;
-    }
-
     setAvatar(emotion) {
-        const avatar = document.getElementById('avatar');
-        avatar.src = this.getAvatarSrc(emotion);
-        avatar.classList.add('bounce');
-        setTimeout(() => avatar.classList.remove('bounce'), 500);
+        const avatarContainer = document.getElementById('avatar-container');
+        
+        // Create img element
+        const img = document.createElement('img');
+        img.src = `assets/${emotion}.svg`;
+        img.alt = emotion;
+        img.className = 'avatar-img';
+        
+        // Clear container and add new image
+        avatarContainer.innerHTML = '';
+        avatarContainer.appendChild(img);
+        
+        // Add bounce animation
+        setTimeout(() => {
+            img.classList.add('bounce');
+            setTimeout(() => img.classList.remove('bounce'), 500);
+        }, 10);
     }
 
     typeText(text, callback) {

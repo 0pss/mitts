@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+    <!-- Rainbow stripes background -->
+    <rect width="200" height="28.57" fill="#e91e63" y="0"/>
+    <rect width="200" height="28.57" fill="#ff5722" y="28.57"/>
+    <rect width="200" height="28.57" fill="#ff9800" y="57.14"/>
+    <rect width="200" height="28.57" fill="#ffeb3b" y="85.71"/>
+    <rect width="200" height="28.57" fill="#8bc34a" y="114.28"/>
+    <rect width="200" height="28.57" fill="#2196f3" y="142.85"/>
+    <rect width="200" height="28.57" fill="#9c27b0" y="171.42"/>
+    
+    <!-- Border -->
+    <rect width="200" height="200" fill="none" stroke="#6b4c9a" stroke-width="8"/>
+    
+    <!-- Happy eyes (closed) -->
+    <path d="M 60 90 L 80 85 L 60 80" fill="none" stroke="#000" stroke-width="4"/>
+    <path d="M 120 90 L 140 85 L 120 80" fill="none" stroke="#000" stroke-width="4"/>
+    
+    <!-- Big smile -->
+    <rect x="60" y="130" width="80" height="12" fill="#000"/>
+    <rect x="65" y="136" width="12" height="12" fill="#000"/>
+    <rect x="123" y="136" width="12" height="12" fill="#000"/>
+    <rect x="70" y="142" width="60" height="8" fill="#ff6b9d"/>
+</svg>
