@@ -149,3 +149,15 @@ body {
 @media (max-width: 400px) {
     #option-container { grid-template-columns: 1fr; }
 }
+
+.reset-btn {
+    margin-top: 20px;
+    border-color: #ff4757 !important; /* Rot für Reset */
+    color: #ff4757 !important;
+    text-align: center !important;
+}
+
+.reset-btn:hover {
+    background: #ff4757 !important;
+    color: white !important;
+}
