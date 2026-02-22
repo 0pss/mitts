@@ -121,3 +121,31 @@ body {
     background: #ff6b9d;
     color: #1a0f2e;
 }
+
+#option-container {
+    margin-top: 15px;
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2x2 Layout für Fragen */
+    gap: 8px;
+}
+
+.choice-btn {
+    background: #1a0f2e;
+    color: #8bac0f;
+    border: 2px solid #6b4c9a;
+    padding: 8px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 9px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.choice-btn:hover {
+    background: #6b4c9a;
+    color: white;
+}
+
+/* Falls nur 1 Button pro Zeile (für lange Texte) */
+@media (max-width: 400px) {
+    #option-container { grid-template-columns: 1fr; }
+}

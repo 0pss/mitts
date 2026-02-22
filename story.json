@@ -1,49 +1,62 @@
 [
   {
+    "id": "intro_1",
     "avatar": "neutral",
-    "text": "Hey! Ich bin ein Topflappen. Ein ganz normaler Topflappen.",
-    "requiredScan": 1
-  },
-  {
-    "avatar": "happy",
-    "text": "Naja, fast normal. Ich kann sprechen. Das ist schon ziemlich cool, oder?",
-    "requiredScan": 1
-  },
-  {
-    "avatar": "angry",
-    "text": "Aber weißt du was mich richtig nervt? Lebensmittelverschwendung!",
-    "requiredScan": 1
-  },
-  {
-    "avatar": "shocked",
-    "text": "11 Millionen Tonnen pro Jahr in Deutschland! Das ist verrückt! (Klick weiter, wenn du dich traust...)",
-    "requiredScan": 1
-  },
-{
-    "id": "start",
-    "avatar": "neutral",
-    "text": "Willkommen Rekrut. Wir müssen uns entscheiden, wie wir die Küche retten.",
+    "text": "Rekrut! Die Küche brennt (metaphorisch). Wähle deine Seite!",
     "options": [
-      { "text": "Team Guerilla", "choice": "guerilla", "nextSceneTag": "chosen_guerilla" },
-      { "text": "Team Ordnung", "choice": "ordnung", "nextSceneTag": "chosen_ordnung" }
+      { "text": "Team Guerilla", "choice": "guerilla", "targetId": "guerilla_start" },
+      { "text": "Team Ordnung", "choice": "ordnung", "targetId": "ordnung_start" }
     ]
   },
   {
-    "id": "chosen_guerilla",
+    "id": "guerilla_start",
     "avatar": "angry",
-    "text": "Guerilla! Wilde Rezepte und Chaos am Herd. Ich mag deine Einstellung!",
-    "nextSceneTag": "common_end"
+    "text": "Guerilla, eh? Dann beweise dich. Wie viel Wasser frisst 1kg Rindfleisch?",
+    "quiz": {
+      "correct": "c",
+      "failText": "Falsch! Das ist viel zu wenig. Denk an die Dimensionen!",
+      "options": [
+        { "text": "1.500 Liter", "val": "a" },
+        { "text": "5.000 Liter", "val": "b" },
+        { "text": "15.000 Liter", "val": "c" },
+        { "text": "500 Liter", "val": "d" }
+      ],
+      "targetId": "guerilla_success"
+    }
   },
   {
-    "id": "chosen_ordnung",
+    "id": "guerilla_success",
     "avatar": "happy",
-    "text": "Ordnung muss sein. Erstmal das Besteck nach Größe sortieren, was?",
-    "nextSceneTag": "common_end"
+    "text": "Richtig. Ein ökologischer Albtraum. Du bist bereit für Scan #2!",
+    "requiredScan": 2,
+    "targetId": "end_scene"
   },
   {
-    "id": "common_end",
+    "id": "ordnung_start",
+    "avatar": "neutral",
+    "text": "Ordnung ist das halbe Leben. Wie viel Lebensmittel werfen wir in DE jährlich weg?",
+    "quiz": {
+      "correct": "b",
+      "failText": "Nicht ganz. Es ist leider viel mehr Ordnungslosigkeit im Spiel!",
+      "options": [
+        { "text": "5 Mio. Tonnen", "val": "a" },
+        { "text": "11 Mio. Tonnen", "val": "b" },
+        { "text": "2 Mio. Tonnen", "val": "c" },
+        { "text": "8 Mio. Tonnen", "val": "d" }
+      ],
+      "targetId": "ordnung_success"
+    }
+  },
+  {
+    "id": "ordnung_success",
+    "avatar": "happy",
+    "text": "Korrekt. 11 Millionen Tonnen Chaos. Scanne erneut für die Inventur!",
+    "requiredScan": 2,
+    "targetId": "end_scene"
+  },
+  {
+    "id": "end_scene",
     "avatar": "rainbow",
-    "text": "Egal welches Team: Hauptsache wir kochen vegan. 🌈",
-    "requiredScan": 2
+    "text": "Willkommen im inneren Zirkel. Die Revolution schmeckt vegan! 🌈"
   }
 ]

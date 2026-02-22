@@ -4,15 +4,13 @@ class StoryEngine {
         this.currentIndex = parseInt(localStorage.getItem('lappen_progress')) || 0;
         this.userTeam = localStorage.getItem('lappen_team') || null;
         
-        // Scan-Logik
-        let totalScans = parseInt(localStorage.getItem('lappen_scans')) || 0;
-        if (!sessionStorage.getItem('scanned_in_this_session')) {
-            totalScans++;
-            localStorage.setItem('lappen_scans', totalScans);
-            sessionStorage.setItem('scanned_in_this_session', 'true');
+        let scans = parseInt(localStorage.getItem('lappen_scans')) || 0;
+        if (!sessionStorage.getItem('scanned_session')) {
+            scans++;
+            localStorage.setItem('lappen_scans', scans);
+            sessionStorage.setItem('scanned_session', 'true');
         }
-        this.currentScanLevel = totalScans;
-        
+        this.currentScanLevel = scans;
         this.isTyping = false;
         this.init();
     }
@@ -24,110 +22,105 @@ class StoryEngine {
     }
 
     async loadStory() {
-        const response = await fetch('story.json');
-        this.scenes = await response.json();
-        document.getElementById('total').textContent = this.scenes.length;
+        const res = await fetch('story.json');
+        this.scenes = await res.json();
     }
 
     setupListeners() {
-        // Klick auf den Screen geht nur weiter, wenn KEINE Optionen da sind
         document.addEventListener('click', (e) => {
-            if (e.target.tagName !== 'BUTTON') this.next();
+            if (e.target.tagName !== 'BUTTON' && !this.isTyping) this.next();
         });
+    }
+
+    // Berechnet wie viele Szenen bis zum nächsten Scan-Block kommen
+    getDynamicTotal() {
+        let count = 0;
+        for (let i = 0; i < this.scenes.length; i++) {
+            if ((this.scenes[i].requiredScan || 1) > this.currentScanLevel) break;
+            count++;
+        }
+        return count;
     }
 
     next() {
         if (this.isTyping) return;
-        const currentScene = this.scenes[this.currentIndex];
+        const current = this.scenes[this.currentIndex];
+        if (current.options || current.quiz) return;
 
-        // Wenn Optionen da sind, MUSS eine gewählt werden
-        if (currentScene.options) return;
+        let nextIdx = current.targetId ? this.scenes.findIndex(s => s.id === current.targetId) : this.currentIndex + 1;
 
-        let nextIndex;
-        if (currentScene.nextSceneTag) {
-            // Springe zur Szene mit der entsprechenden ID
-            nextIndex = this.scenes.findIndex(s => s.id === currentScene.nextSceneTag);
-        } else {
-            nextIndex = this.currentIndex + 1;
-        }
-
-        if (nextIndex !== -1 && nextIndex < this.scenes.length) {
-            const nextScene = this.scenes[nextIndex];
-            if ((nextScene.requiredScan || 1) > this.currentScanLevel) {
-                this.showLockMessage(nextScene.requiredScan);
+        if (nextIdx !== -1 && nextIdx < this.scenes.length) {
+            const nextS = this.scenes[nextIdx];
+            if ((nextS.requiredScan || 1) > this.currentScanLevel) {
+                this.showLock(nextS.requiredScan);
                 return;
             }
-            this.currentIndex = nextIndex;
+            this.currentIndex = nextIdx;
             localStorage.setItem('lappen_progress', this.currentIndex);
             this.showScene(this.currentIndex);
         }
     }
 
-    makeChoice(choice, nextTag) {
-        localStorage.setItem('lappen_team', choice);
-        this.userTeam = choice;
+    showScene(idx) {
+        const scene = this.scenes[idx];
+        document.getElementById('avatar').src = `assets/${scene.avatar}.svg`;
         
-        // Finde die nächste Szene basierend auf dem Tag der Wahl
-        this.currentIndex = this.scenes.findIndex(s => s.id === nextTag);
+        this.typeText(scene.text, () => {
+            if (scene.options) this.renderButtons(scene.options, 'choice');
+            if (scene.quiz) this.renderButtons(scene.quiz.options, 'quiz', scene.quiz);
+        });
+
+        // Fortschrittsanzeige updaten (dynamisch begrenzt)
+        const total = this.getDynamicTotal();
+        document.getElementById('current').textContent = Math.min(idx + 1, total);
+        document.getElementById('total').textContent = total;
+    }
+
+    renderButtons(opts, type, quizData = null) {
+        const container = document.createElement('div');
+        container.id = "option-container";
+        
+        opts.forEach(o => {
+            const b = document.createElement('button');
+            b.className = "choice-btn";
+            b.textContent = o.text;
+            b.onclick = (e) => {
+                e.stopPropagation();
+                if (type === 'choice') {
+                    localStorage.setItem('lappen_team', o.choice);
+                    this.goToId(o.targetId);
+                } else {
+                    if (o.val === quizData.correct) {
+                        this.goToId(quizData.targetId);
+                    } else {
+                        this.typeText(quizData.failText, () => this.renderButtons(opts, type, quizData));
+                    }
+                }
+            };
+            container.appendChild(b);
+        });
+        document.getElementById('story-text').appendChild(container);
+    }
+
+    goToId(id) {
+        this.currentIndex = this.scenes.findIndex(s => s.id === id);
         localStorage.setItem('lappen_progress', this.currentIndex);
         this.showScene(this.currentIndex);
     }
 
-    showScene(index) {
-        const scene = this.scenes[index];
-        const avatar = document.getElementById('avatar');
-        avatar.src = `assets/${scene.avatar}.svg`;
-        
-        this.typeText(scene.text, () => {
-            // Wenn der Text fertig ist, zeige Optionen falls vorhanden
-            if (scene.options) {
-                this.showOptions(scene.options);
-            }
-        });
-        
-        document.getElementById('current').textContent = index + 1;
-    }
-
-    showOptions(options) {
-        const textElement = document.getElementById('story-text');
-        const optContainer = document.createElement('div');
-        optContainer.id = "option-container";
-        
-        options.forEach(opt => {
-            const btn = document.createElement('button');
-            btn.className = "choice-btn";
-            btn.textContent = opt.text;
-            btn.onclick = (e) => {
-                e.stopPropagation();
-                this.makeChoice(opt.choice, opt.nextSceneTag);
-            };
-            optContainer.appendChild(btn);
-        });
-        textElement.appendChild(optContainer);
-    }
-
-    typeText(text, callback) {
+    typeText(text, cb) {
         this.isTyping = true;
-        const textElement = document.getElementById('story-text');
-        textElement.textContent = '';
-        
+        const el = document.getElementById('story-text');
+        el.textContent = '';
         let i = 0;
-        const type = () => {
-            if (i < text.length) {
-                textElement.textContent += text.charAt(i);
-                i++;
-                setTimeout(type, 25);
-            } else {
-                this.isTyping = false;
-                if (callback) callback();
-            }
-        };
-        type();
+        const t = setInterval(() => {
+            if (i < text.length) { el.textContent += text[i++]; }
+            else { clearInterval(t); this.isTyping = false; if (cb) cb(); }
+        }, 25);
     }
 
-    showLockMessage(req) {
-        this.typeText(`STOPP! Du hast erst ${this.currentScanLevel} Scans. Scanne den Lappen erneut für Level ${req}!`);
+    showLock(req) {
+        this.typeText(`STOPP! Sicherheitsfreigabe erforderlich. Scanne den Lappen erneut für Level ${req}!`);
     }
 }
-
 document.addEventListener('DOMContentLoaded', () => new StoryEngine());
