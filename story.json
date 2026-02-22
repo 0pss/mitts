@@ -56,13 +56,13 @@
     "id": "scan_checkpoint_2",
     "avatar": "shocked",
     "text": "HALT! Um tiefer in das Archiv vorzudringen, brauche ich eine erneute Bestätigung deiner Existenz.",
-    "requiredScan": 2,
     "targetId": "end_scene"
   },
   {
     "id": "end_scene",
     "avatar": "rainbow",
     "text": "Willkommen im inneren Zirkel. Du hast es geschafft. Die Revolution schmeckt vegan! 🌈",
+    "requiredScan": 2,
     "isEnd": true
   }
 ]
