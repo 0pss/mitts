@@ -97,3 +97,27 @@ body {
         padding: 20px;
     }
 }
+
+#option-container {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.choice-btn {
+    background: #6b4c9a;
+    color: white;
+    border: 2px solid #ff6b9d;
+    padding: 10px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+}
+
+.choice-btn:hover {
+    background: #ff6b9d;
+    color: #1a0f2e;
+}

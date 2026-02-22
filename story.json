@@ -19,14 +19,31 @@
     "text": "11 Millionen Tonnen pro Jahr in Deutschland! Das ist verrückt! (Klick weiter, wenn du dich traust...)",
     "requiredScan": 1
   },
-  {
+{
+    "id": "start",
     "avatar": "neutral",
-    "text": "Ah, Scan Nummer 2 erfolgreich. Sehr gut. Jetzt kann ich dir das wahre Rezept der Revolution zeigen.",
-    "requiredScan": 2
+    "text": "Willkommen Rekrut. Wir müssen uns entscheiden, wie wir die Küche retten.",
+    "options": [
+      { "text": "Team Guerilla", "choice": "guerilla", "nextSceneTag": "chosen_guerilla" },
+      { "text": "Team Ordnung", "choice": "ordnung", "nextSceneTag": "chosen_ordnung" }
+    ]
   },
   {
+    "id": "chosen_guerilla",
+    "avatar": "angry",
+    "text": "Guerilla! Wilde Rezepte und Chaos am Herd. Ich mag deine Einstellung!",
+    "nextSceneTag": "common_end"
+  },
+  {
+    "id": "chosen_ordnung",
+    "avatar": "happy",
+    "text": "Ordnung muss sein. Erstmal das Besteck nach Größe sortieren, was?",
+    "nextSceneTag": "common_end"
+  },
+  {
+    "id": "common_end",
     "avatar": "rainbow",
-    "text": "Oder bleib einfach hier und genieße meine farbenfrohe Seite! 🌈",
+    "text": "Egal welches Team: Hauptsache wir kochen vegan. 🌈",
     "requiredScan": 2
   }
 ]
