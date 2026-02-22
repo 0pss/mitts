@@ -27,9 +27,8 @@
   {
     "id": "guerilla_success",
     "avatar": "happy",
-    "text": "Richtig. Ein ökologischer Albtraum. Du bist bereit für Scan #2!",
-    "requiredScan": 2,
-    "targetId": "end_scene"
+    "text": "Richtig. Ein ökologischer Albtraum. Du bist bereit für die nächste Stufe!",
+    "targetId": "scan_checkpoint_2"
   },
   {
     "id": "ordnung_start",
@@ -50,13 +49,20 @@
   {
     "id": "ordnung_success",
     "avatar": "happy",
-    "text": "Korrekt. 11 Millionen Tonnen Chaos. Scanne erneut für die Inventur!",
+    "text": "Korrekt. 11 Millionen Tonnen Chaos. Zeit für eine Bestandsaufnahme.",
+    "targetId": "scan_checkpoint_2"
+  },
+  {
+    "id": "scan_checkpoint_2",
+    "avatar": "shocked",
+    "text": "HALT! Um tiefer in das Archiv vorzudringen, brauche ich eine erneute Bestätigung deiner Existenz.",
     "requiredScan": 2,
     "targetId": "end_scene"
   },
   {
     "id": "end_scene",
     "avatar": "rainbow",
-    "text": "Willkommen im inneren Zirkel. Die Revolution schmeckt vegan! 🌈"
+    "text": "Willkommen im inneren Zirkel. Du hast es geschafft. Die Revolution schmeckt vegan! 🌈",
+    "isEnd": true
   }
 ]
