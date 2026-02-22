@@ -2,54 +2,32 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Die Lappen-Chroniken</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Story Engine POC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="simple.css">
 </head>
 <body>
-    <!-- Scene Container -->
-    <div id="scene-container">
-        <div id="background"></div>
-        <div id="scene-content"></div>
-    </div>
+    <div id="app">
+        <!-- Avatar -->
+        <div id="avatar-container">
+            <img id="avatar" src="" alt="Character">
+        </div>
 
-    <!-- Dialog Box -->
-    <div id="dialog-box">
-        <div id="avatar-container"></div>
+        <!-- Text -->
         <div id="text-container">
-            <div id="dialog-text"></div>
-            <div id="choices-container"></div>
+            <p id="story-text"></p>
+            <div id="progress">
+                <span id="current">1</span> / <span id="total">6</span>
+            </div>
+        </div>
+
+        <!-- Navigation hint -->
+        <div id="nav-hint">
+            ← Swipe oder klick →
         </div>
     </div>
 
-    <!-- Quiz Container (hidden initially) -->
-    <div id="quiz-container" class="hidden">
-        <div class="quiz-box">
-            <h2 id="quiz-question"></h2>
-            <div id="quiz-options"></div>
-        </div>
-    </div>
-
-    <!-- Game Container (hidden initially) -->
-    <canvas id="game-canvas" class="hidden"></canvas>
-    <div id="game-ui" class="hidden">
-        <div id="score">Score: 0</div>
-        <div id="game-instructions">Tap zum Springen!</div>
-    </div>
-
-    <!-- QR Warning -->
-    <div id="qr-warning" class="hidden">
-        <div class="warning-box">
-            <div id="angry-lappen"></div>
-            <h2>HEY!</h2>
-            <p>Scann mich erst mal ordentlich mit dem QR-Code!</p>
-            <p class="small">Du glaubst doch nicht ernsthaft, dass du hier einfach so reinkommst?</p>
-        </div>
-    </div>
-
-    <script src="js/main.js"></script>
-    <script src="js/game.js"></script>
+    <script src="simple.js"></script>
 </body>
 </html>
